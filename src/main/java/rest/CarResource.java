@@ -1,7 +1,7 @@
 package rest;
 
 import com.google.gson.Gson;
-import entity.User;
+import entity.Car;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -18,7 +18,7 @@ import utils.PuSelector;
  * @author lam@cphbusiness.dk
  */
 @Path("info")
-public class DemoResource {
+public class CarResource {
 
     @Context
     private UriInfo context;
@@ -39,7 +39,7 @@ public class DemoResource {
     public String allUsers() {
         EntityManager em = PuSelector.getEntityManagerFactory("pu").createEntityManager();
         try {
-            List<User> users = em.createQuery("select user from User user").getResultList();
+            List<Car> users = em.createQuery("select user from User user").getResultList();
             return "[" + users.size() + "]";
         } finally {
             em.close();

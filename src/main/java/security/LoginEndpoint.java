@@ -10,8 +10,7 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import entity.User;
-import entity.UserFacade;
+import facade.CarFacade;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,7 +30,7 @@ import utils.PuSelector;
 public class LoginEndpoint {
 
     public static final int TOKEN_EXPIRE_TIME = 1000 * 60 * 30; //30 min
-    public static final UserFacade userFacade = UserFacade.getInstance(PuSelector.getEntityManagerFactory("pu"));
+    public static final CarFacade userFacade = CarFacade.getInstance(PuSelector.getEntityManagerFactory("pu"));
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -43,20 +42,20 @@ public class LoginEndpoint {
         String password = json.get("password").getAsString();
 
         //Todo refactor into facade
-        try {
-            User user = userFacade.getVeryfiedUser(username, password);
-            String token = createToken(username, user.getRolesAsStrings());
-            JsonObject responseJson = new JsonObject();
-            responseJson.addProperty("username", username);
-            responseJson.addProperty("token", token);
-            return Response.ok(new Gson().toJson(responseJson)).build();
-
-        } catch (JOSEException | AuthenticationException ex) {
-            if (ex instanceof AuthenticationException) {
-                throw (AuthenticationException) ex;
-            }
-            Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            User user = userFacade.getVeryfiedUser(username, password);
+//            String token = createToken(username, user.getRolesAsStrings());
+//            JsonObject responseJson = new JsonObject();
+//            responseJson.addProperty("username", username);
+//            responseJson.addProperty("token", token);
+//            return Response.ok(new Gson().toJson(responseJson)).build();
+//
+//        } catch (JOSEException | AuthenticationException ex) {
+//            if (ex instanceof AuthenticationException) {
+//                throw (AuthenticationException) ex;
+//            }
+//            Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         throw new AuthenticationException("Invalid username or password! Please try again");
     }
 
