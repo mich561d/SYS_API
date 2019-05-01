@@ -4,7 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.SignedJWT;
-import exceptions.AuthenticationException;
+import exceptions.CarException;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.text.ParseException;
@@ -46,7 +46,7 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
                 UserPrincipal user = getUserPrincipalFromTokenIfValid(token);
                 //What if the client had logged out????
                 request.setSecurityContext(new JWTSecurityContext(user, request));
-            } catch (AuthenticationException | ParseException | JOSEException ex) {
+            } catch (CarException | ParseException | JOSEException ex) {
                 Logger.getLogger(JWTAuthenticationFilter.class.getName()).log(Level.SEVERE, null, ex);
                 request.abortWith(exceptions.GenericExceptionMapper.makeErrRes("Token not valid (timed out?)", 403));
             }
@@ -69,14 +69,14 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
     }
 
     private UserPrincipal getUserPrincipalFromTokenIfValid(String token)
-            throws ParseException, JOSEException, AuthenticationException {
+            throws ParseException, JOSEException, CarException {
         SignedJWT signedJWT = SignedJWT.parse(token);
         //Is it a valid token (generated with our shared key)
         JWSVerifier verifier = new MACVerifier(SharedSecret.getSharedKey());
 
         if (signedJWT.verify(verifier)) {
             if (new Date().getTime() > signedJWT.getJWTClaimsSet().getExpirationTime().getTime()) {
-                throw new AuthenticationException("Your Token is no longer valid");
+                throw new CarException("Your Token is no longer valid");
             }
             String roles = signedJWT.getJWTClaimsSet().getClaim("roles").toString();
             String username = signedJWT.getJWTClaimsSet().getClaim("username").toString();

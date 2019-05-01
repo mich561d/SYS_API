@@ -2,9 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import entity.Car;
+import exceptions.CarException;
+import facade.CarFacade;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
-import javax.persistence.EntityManager;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -14,10 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import utils.PuSelector;
 
-/**
- * @author lam@cphbusiness.dk
- */
-@Path("info")
+@Path("car")
 public class CarResource {
 
     @Context
@@ -26,23 +24,24 @@ public class CarResource {
     @Context
     SecurityContext securityContext;
 
+    CarFacade f = CarFacade.getInstance(PuSelector.getEntityManagerFactory("pu"));
+    Gson gson = new Gson();
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getInfoForAll() {
-        return "{\"msg\":\"Hello anonymous\"}";
+    @Path("test")
+    public String test() {
+        return "You passed the test!";
     }
 
-    //Just to verify if the database is setup
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all")
-    public String allUsers() {
-        EntityManager em = PuSelector.getEntityManagerFactory("pu").createEntityManager();
+    public String allCars() {
         try {
-            List<Car> users = em.createQuery("select user from User user").getResultList();
-            return "[" + users.size() + "]";
-        } finally {
-            em.close();
+            return gson.toJson(f.getAllCars());
+        } catch (CarException ex) {
+            return gson.toJson(ex);
         }
     }
 

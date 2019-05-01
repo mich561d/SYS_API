@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 public class SetupTestData {
 
     private static final TestDataGenerator GEN = new TestDataGenerator();
-    private static final int AMOUNT_OF_CARS = 1000;
+    private static final int AMOUNT_OF_CARS = 100;
 
     public static void main(String[] args) {
         EntityManager em = PuSelector.getEntityManagerFactory("pu").createEntityManager();

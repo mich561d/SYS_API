@@ -282,5 +282,5 @@ public class Car implements Serializable {
     public String toString() {
         return "entity.Car[ regno=" + regno + " ]";
     }
-    
+
 }

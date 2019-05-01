@@ -1,7 +1,7 @@
 package unittest;
 
 import facade.CarFacade;
-import exceptions.AuthenticationException;
+import exceptions.CarException;
 import javax.persistence.EntityManagerFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -36,5 +36,4 @@ public class TestUsers {
 ////        User u = facade.getVeryfiedUser("user", "testxxxx");
 ////        assertEquals("user", u.getUserName());
 //    }
-
 }

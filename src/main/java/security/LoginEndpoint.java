@@ -22,7 +22,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import exceptions.AuthenticationException;
+import exceptions.CarException;
 import exceptions.GenericExceptionMapper;
 import utils.PuSelector;
 
@@ -35,7 +35,7 @@ public class LoginEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(String jsonString) throws AuthenticationException {
+    public Response login(String jsonString) throws CarException {
 
         JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
         String username = json.get("username").getAsString();
@@ -56,7 +56,7 @@ public class LoginEndpoint {
 //            }
 //            Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        throw new AuthenticationException("Invalid username or password! Please try again");
+        throw new CarException("Invalid username or password! Please try again");
     }
 
     private String createToken(String userName, List<String> roles) throws JOSEException {

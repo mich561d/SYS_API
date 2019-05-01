@@ -12,7 +12,7 @@ public class TestUtils {
             //Delete existing users and roles to get a "fresh" database
             em.createQuery("delete from Car").executeUpdate();
             em.createQuery("delete from BookingInformation").executeUpdate();
-            
+
             System.out.println("Saved test data to database");
             em.getTransaction().commit();
         } finally {
