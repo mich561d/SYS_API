@@ -12,11 +12,13 @@ public class SetupTestData {
     private static final int AMOUNT_OF_CARS = 100;
 
     public static void main(String[] args) {
-        EntityManager em = PuSelector.getEntityManagerFactory("pu").createEntityManager();
+        createData();
+    }
 
+    public static void createData() {
+        EntityManager em = PuSelector.getEntityManagerFactory("pu").createEntityManager();
         em.getTransaction().begin();
         List<Country> countries = em.createNamedQuery("Country.findAll", Country.class).getResultList();
-
         for (int i = 0; i < AMOUNT_OF_CARS; i++) {
             String manufactor = GEN.getRandomManufactor();
             String[] place = GEN.getRandomPlace();
@@ -24,7 +26,6 @@ public class SetupTestData {
             car.setCountry(countries.get(new Random().nextInt(countries.size() - 1)));
             em.persist(car);
         }
-
         em.getTransaction().commit();
     }
 }

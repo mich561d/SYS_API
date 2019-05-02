@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import exceptions.CarException;
 import java.util.ArrayList;
 import java.util.List;
+import utils.SetupTestData;
 
 public class CarFacade {
 
@@ -26,6 +27,10 @@ public class CarFacade {
         List<CarDTO> carsDTO = new ArrayList();
         try {
             List<Car> cars = em.createNamedQuery("Car.findAll", Car.class).getResultList();
+            if (cars.isEmpty()) {
+                SetupTestData.createData();
+                cars = em.createNamedQuery("Car.findAll", Car.class).getResultList();
+            }
             for (Car car : cars) {
                 CarDTO dto = new CarDTO(car.getRegno(), car.getPrice(), car.getManufactor(), car.getModel(), car.getType(), car.getReleaseYear(), car.getDrivingDist(), car.getSeats(), car.getDrive(), car.getFuelType(), car.getLongitude(), car.getLatitude(), car.getAddress(), car.getCountry().getCountry());
                 carsDTO.add(dto);
