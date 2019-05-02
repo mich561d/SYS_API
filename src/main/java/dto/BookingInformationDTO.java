@@ -1,5 +1,6 @@
 package dto;
 
+import entity.BookingInformation;
 import java.util.Date;
 
 public class BookingInformationDTO {
@@ -10,9 +11,16 @@ public class BookingInformationDTO {
     private Date created;
     private double price;
     private CarDTO car;
+    
+    public BookingInformationDTO(BookingInformation bi) {
+        this.startPeriod = bi.getStartPeriod();
+        this.endPeriod = bi.getEndPeriod();
+        this.created = bi.getCreated();
+        this.price = bi.getPrice();
+        this.car = new CarDTO(bi.getCar());
+    }
 
-    public BookingInformationDTO(Integer id, String startPeriod, String endPeriod, Date created, double price, CarDTO car) {
-        this.id = id;
+    public BookingInformationDTO(String startPeriod, String endPeriod, Date created, double price, CarDTO car) {
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;
         this.created = created;

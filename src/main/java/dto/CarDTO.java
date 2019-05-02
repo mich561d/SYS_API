@@ -1,5 +1,6 @@
 package dto;
 
+import entity.Car;
 import java.util.Collection;
 
 public class CarDTO {
@@ -19,6 +20,23 @@ public class CarDTO {
     private String address;
     private String country;
     private Collection<BookingInformationDTO> bookingInformationCollection;
+
+    public CarDTO(Car car) {
+        this.regno = car.getRegno();
+        this.price = car.getPrice();
+        this.manufactor = car.getManufactor();
+        this.model = car.getModel();
+        this.type = car.getType();
+        this.releaseYear = car.getReleaseYear();
+        this.drivingDist = car.getDrivingDist();
+        this.seats = car.getSeats();
+        this.drive = car.getDrive();
+        this.fuelType = car.getFuelType();
+        this.longitude = car.getLongitude();
+        this.latitude = car.getLatitude();
+        this.address = car.getAddress();
+        this.country = car.getCountry().getCountry();
+    }
 
     public CarDTO(String regno, double price, String manufactor, String model, String type, int releaseYear, int drivingDist, int seats, String drive, String fuelType, String longitude, String latitude, String address, String country) {
         this.regno = regno;

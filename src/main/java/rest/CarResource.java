@@ -1,9 +1,11 @@
 package rest;
 
 import com.google.gson.Gson;
+import exceptions.BookingException;
 import exceptions.CarException;
 import exceptions.GenericExceptionMapper;
 import facade.CarFacade;
+import java.text.ParseException;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
@@ -64,7 +66,12 @@ public class CarResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("rent?regNo={regNo}&start={start}&end={end}")
-    public String rentCar(@PathParam("regNo") String regNo, @PathParam("start") String start, @PathParam("end") String end) {
-        return "hola from spain!";
+    public Response rentCar(@PathParam("regNo") String regNo, @PathParam("start") String start, @PathParam("end") String end) {
+        try {
+            return Response.ok().entity(gson.toJson(f.rentCar(regNo, start, end))).build();
+        } catch (BookingException | ParseException ex) {
+            return m.toResponse(ex);
+        }
+
     }
 }

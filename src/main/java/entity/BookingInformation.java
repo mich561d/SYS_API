@@ -82,6 +82,13 @@ public class BookingInformation implements Serializable {
         this.price = price;
     }
 
+    public BookingInformation(String startPeriod, String endPeriod, Date created, double price) {
+        this.startPeriod = startPeriod;
+        this.endPeriod = endPeriod;
+        this.created = created;
+        this.price = price;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -128,6 +135,7 @@ public class BookingInformation implements Serializable {
 
     public void setCar(Car car) {
         this.car = car;
+        car.getBookingInformationCollection().add(this);
     }
 
     @Override
