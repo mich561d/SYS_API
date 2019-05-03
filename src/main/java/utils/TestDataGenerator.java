@@ -1,5 +1,6 @@
 package utils;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 public class TestDataGenerator {
@@ -18,7 +19,7 @@ public class TestDataGenerator {
     }
 
     public double getRandomPrice() {
-        return (R.nextDouble() * 10000.0) + 1500.0;
+        return Double.parseDouble(new DecimalFormat("#.##").format((R.nextDouble() * 300.0) + 200.0));
     }
 
     public String getRandomManufactor() {
