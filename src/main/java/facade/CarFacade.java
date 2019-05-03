@@ -47,8 +47,37 @@ public class CarFacade {
         return carsDTO;
     }
 
-    public List<CarDTO> getAllCarsByPeriod(String start, String end) throws CarException {
-        return null;
+    public List<CarDTO> getAllCarsByPeriod(String start, String end) throws CarException, ParseException {
+        EntityManager em = emf.createEntityManager();
+        List<CarDTO> carsDTO = new ArrayList();
+        try {
+            List<Car> cars = em.createNamedQuery("Car.findAll", Car.class).getResultList();
+            if (cars.isEmpty()) {
+                SetupTestData.createData();
+                cars = em.createNamedQuery("Car.findAll", Car.class).getResultList();
+            }
+            List<BookingInformation> bookings = em.createNamedQuery("BookingInformation.findAll", BookingInformation.class).getResultList();
+            Date startDate = StringToDate(start);
+            Date endDate = StringToDate(end);
+            for (BookingInformation booking : bookings) {
+                Date s = StringToDate(booking.getStartPeriod());
+                Date e = StringToDate(booking.getEndPeriod());
+                boolean inside = startDate.after(s) && endDate.before(e);
+                boolean through = startDate.before(s) && endDate.after(e);
+                boolean atStart = startDate.before(s) && endDate.after(s);
+                boolean atEnd = startDate.before(e) && endDate.after(e);
+                if (inside || through || atStart || atEnd) {
+                    cars.removeIf(car -> (car.getRegno().equals(booking.getCar().getRegno())));
+                }
+            }
+            for (Car car : cars) {
+                CarDTO dto = new CarDTO(car.getRegno(), car.getPrice(), car.getManufactor(), car.getModel(), car.getType(), car.getReleaseYear(), car.getDrivingDist(), car.getSeats(), car.getDrive(), car.getFuelType(), car.getLongitude(), car.getLatitude(), car.getAddress(), car.getCountry().getCountry());
+                carsDTO.add(dto);
+            }
+        } finally {
+            em.close();
+        }
+        return carsDTO;
     }
 
     public CarDTO getCarByRegNo(String regNo) throws CarException {

@@ -7,6 +7,8 @@ import exceptions.CarException;
 import exceptions.GenericExceptionMapper;
 import facade.CarFacade;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
@@ -58,7 +60,7 @@ public class CarResource {
     public Response allCarsByPeriod(@PathParam("start") String start, @PathParam("end") String end) {
         try {
             return Response.ok().entity(gson.toJson(f.getAllCarsByPeriod(start, end))).build();
-        } catch (CarException ex) {
+        } catch (CarException | ParseException ex) {
             return m.toResponse(ex);
         }
     }
@@ -77,7 +79,7 @@ public class CarResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("rent?regNo={regNo}&start={start}&end={end}")
+    @Path("rent/{regNo}/{start}/{end}")
     public Response rentCar(@PathParam("regNo") String regNo, @PathParam("start") String start, @PathParam("end") String end) {
         try {
             return Response.ok().entity(gson.toJson(f.rentCar(regNo, start, end))).build();
