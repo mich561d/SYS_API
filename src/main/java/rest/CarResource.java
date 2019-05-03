@@ -1,6 +1,7 @@
 package rest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import exceptions.BookingException;
 import exceptions.CarException;
 import exceptions.GenericExceptionMapper;
@@ -29,9 +30,9 @@ public class CarResource {
     @Context
     SecurityContext securityContext;
 
-    CarFacade f = CarFacade.getInstance(PuSelector.getEntityManagerFactory("pu"));
-    Gson gson = new Gson();
-    GenericExceptionMapper m = new GenericExceptionMapper();
+    private CarFacade f = CarFacade.getInstance(PuSelector.getEntityManagerFactory("pu"));
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private GenericExceptionMapper m = new GenericExceptionMapper();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,6 +47,17 @@ public class CarResource {
     public Response allCars() {
         try {
             return Response.ok().entity(gson.toJson(f.getAllCars())).build();
+        } catch (CarException ex) {
+            return m.toResponse(ex);
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("available/{start}/{end}")
+    public Response allCarsByPeriod(@PathParam("start") String start, @PathParam("end") String end) {
+        try {
+            return Response.ok().entity(gson.toJson(f.getAllCarsByPeriod(start, end))).build();
         } catch (CarException ex) {
             return m.toResponse(ex);
         }

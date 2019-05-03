@@ -47,6 +47,10 @@ public class CarFacade {
         return carsDTO;
     }
 
+    public List<CarDTO> getAllCarsByPeriod(String start, String end) throws CarException {
+        return null;
+    }
+
     public CarDTO getCarByRegNo(String regNo) throws CarException {
         EntityManager em = emf.createEntityManager();
         CarDTO carDTO;
@@ -96,4 +100,5 @@ public class CarFacade {
         Date d2 = new Date(e.getYear(), e.getMonth(), e.getDay());
         return (d2.getTime() - d1.getTime()) / 1000 / 60 / 60 / 24;
     }
+
 }
