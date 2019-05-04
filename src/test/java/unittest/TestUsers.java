@@ -1,7 +1,10 @@
 package unittest;
 
+import dto.CarDTO;
 import facade.CarFacade;
 import exceptions.CarException;
+import java.text.ParseException;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,15 +28,22 @@ public class TestUsers {
     public static void tearDownClass() {
     }
 
-//    @Test
-//    public void getUserValid() throws AuthenticationException {
-////        User u = facade.getVeryfiedUser("user", "test");
-////        assertEquals("user", u.getUserName());
-//    }
-//
-//    @Test(expected = AuthenticationException.class)
-//    public void getUserInValid() throws AuthenticationException {
-////        User u = facade.getVeryfiedUser("user", "testxxxx");
-////        assertEquals("user", u.getUserName());
-//    }
+    @Test
+    public void getAllCars() throws CarException {
+        List<CarDTO> cars = facade.getAllCars();
+        assertEquals(5, cars.size());
+    }
+
+    @Test // Since no booking in test data (YET!!!) 
+    public void getAllCarsByPeriod() throws CarException, ParseException {
+        List<CarDTO> cars = facade.getAllCarsByPeriod("04-05-2019", "13-05-2019");
+        assertEquals(5, cars.size());
+    }
+
+    @Test
+    public void getCarByRegNo() throws CarException {
+        CarDTO car = facade.getCarByRegNo("AA12345");
+        assertEquals("Fiat", car.getManufactor());
+    }
+
 }
