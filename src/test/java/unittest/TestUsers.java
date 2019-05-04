@@ -6,7 +6,6 @@ import exceptions.CarException;
 import java.text.ParseException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -24,10 +23,6 @@ public class TestUsers {
         TestUtils.setupTestUsers(emf);
     }
 
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
     @Test
     public void getAllCars() throws CarException {
         List<CarDTO> cars = facade.getAllCars();
@@ -40,10 +35,20 @@ public class TestUsers {
         assertEquals(5, cars.size());
     }
 
+    @Test(expected = ParseException.class)
+    public void getAllCarsByPeriodFail() throws CarException, ParseException {
+        facade.getAllCarsByPeriod("04052019", "13-05-2019");
+    }
+
     @Test
     public void getCarByRegNo() throws CarException {
         CarDTO car = facade.getCarByRegNo("AA12345");
         assertEquals("Fiat", car.getManufactor());
+    }
+
+    @Test(expected = CarException.class)
+    public void getCarByRegNoFail() throws CarException {
+        facade.getCarByRegNo("FF12345");
     }
 
 }
