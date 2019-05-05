@@ -31,13 +31,13 @@ public class TestUsers {
 
     @Test // Since no booking in test data (YET!!!) 
     public void getAllCarsByPeriod() throws CarException, ParseException {
-        List<CarDTO> cars = facade.getAllCarsByPeriod("04-05-2019", "13-05-2019");
+        List<CarDTO> cars = facade.getAllCarsByPeriod("2019-05-04", "2019-05-13");
         assertEquals(5, cars.size());
     }
 
     @Test(expected = ParseException.class)
     public void getAllCarsByPeriodFail() throws CarException, ParseException {
-        facade.getAllCarsByPeriod("04052019", "13-05-2019");
+        facade.getAllCarsByPeriod("20190504", "2019-05-13");
     }
 
     @Test

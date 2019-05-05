@@ -118,7 +118,7 @@ public class CarFacade {
     }
 
     private Date StringToDate(String date) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date dateObj;
         dateObj = sdf.parse(date);
         return dateObj;

@@ -2,7 +2,6 @@ package testutils;
 
 import entity.Car;
 import entity.Country;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
