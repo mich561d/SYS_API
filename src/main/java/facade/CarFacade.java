@@ -28,7 +28,7 @@ public class CarFacade {
         return instance;
     }
 
-    public List<CarDTO> getAllCars() throws CarException {
+    public List<CarDTO> getAllCars() {
         EntityManager em = emf.createEntityManager();
         List<CarDTO> carsDTO = new ArrayList();
         try {
@@ -47,7 +47,7 @@ public class CarFacade {
         return carsDTO;
     }
 
-    public List<CarDTO> getAllCarsByPeriod(String start, String end) throws CarException, ParseException {
+    public List<CarDTO> getAllCarsByPeriod(String start, String end) throws ParseException {
         EntityManager em = emf.createEntityManager();
         List<CarDTO> carsDTO = new ArrayList();
         try {

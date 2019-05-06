@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 import testutils.TestUtils;
 import utils.PuSelector;
 
-public class TestUsers {
+public class CarTest {
 
     private static CarFacade facade;
 
@@ -24,13 +24,13 @@ public class TestUsers {
     }
 
     @Test
-    public void getAllCars() throws CarException {
+    public void getAllCars() {
         List<CarDTO> cars = facade.getAllCars();
         assertEquals(5, cars.size());
     }
 
     @Test // Since no booking in test data (YET!!!) 
-    public void getAllCarsByPeriod() throws CarException, ParseException {
+    public void getAllCarsByPeriod() throws ParseException {
         List<CarDTO> cars = facade.getAllCarsByPeriod("2019-05-04", "2019-05-13");
         assertEquals(5, cars.size());
     }

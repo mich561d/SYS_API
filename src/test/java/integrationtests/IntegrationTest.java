@@ -7,7 +7,6 @@ import io.restassured.parsing.Parser;
 import java.net.MalformedURLException;
 import javax.servlet.ServletException;
 import org.apache.catalina.LifecycleException;
-import static org.hamcrest.Matchers.*;
 import org.junit.AfterClass;
 import org.junit.Test;
 import testutils.EmbeddedTomcat;
