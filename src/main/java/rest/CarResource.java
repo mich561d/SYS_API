@@ -47,11 +47,7 @@ public class CarResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all")
     public Response allCars() {
-        try {
-            return Response.ok().entity(gson.toJson(f.getAllCars())).build();
-        } catch (CarException ex) {
-            return m.toResponse(ex);
-        }
+        return Response.ok().entity(gson.toJson(f.getAllCars())).build();
     }
 
     @GET
@@ -60,7 +56,7 @@ public class CarResource {
     public Response allCarsByPeriod(@PathParam("start") String start, @PathParam("end") String end) {
         try {
             return Response.ok().entity(gson.toJson(f.getAllCarsByPeriod(start, end))).build();
-        } catch (CarException | ParseException ex) {
+        } catch (ParseException ex) {
             return m.toResponse(ex);
         }
     }
