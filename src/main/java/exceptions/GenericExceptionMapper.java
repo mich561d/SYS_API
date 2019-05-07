@@ -77,7 +77,10 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
             return ((WebApplicationException) ex).getResponse().getStatusInfo();
         }
         if (ex instanceof CarException) {
-            return Response.Status.FORBIDDEN;
+            return Response.Status.BAD_REQUEST;
+        }
+        if (ex instanceof BookingException) {
+            return Response.Status.BAD_REQUEST;
         } else {
             return Response.Status.INTERNAL_SERVER_ERROR;
         }
