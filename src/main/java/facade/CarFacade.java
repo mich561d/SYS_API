@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.SetupTestData;
 
 public class CarFacade {
@@ -47,7 +49,7 @@ public class CarFacade {
         return carsDTO;
     }
 
-    public List<CarDTO> getAllCarsByPeriod(String start, String end) throws ParseException {
+    public List<CarDTO> getAllCarsByPeriod(String start, String end) throws CarException {
         EntityManager em = emf.createEntityManager();
         List<CarDTO> carsDTO = new ArrayList();
         try {
@@ -74,6 +76,8 @@ public class CarFacade {
                 CarDTO dto = new CarDTO(car.getRegno(), car.getPrice(), car.getManufactor(), car.getModel(), car.getType(), car.getReleaseYear(), car.getDrivingDist(), car.getSeats(), car.getDrive(), car.getFuelType(), car.getLongitude(), car.getLatitude(), car.getAddress(), car.getCountry().getCountry());
                 carsDTO.add(dto);
             }
+        } catch (ParseException ex) {
+            throw new CarException("Date format is unsupported!");
         } finally {
             em.close();
         }
@@ -94,17 +98,18 @@ public class CarFacade {
         return carDTO;
     }
 
-    public BookingInformationDTO rentCar(String regNo, String start, String end) throws ParseException, BookingException {
-        StringToDate(start);
+    public BookingInformationDTO rentCar(String regNo, String start, String end) throws BookingException {
         EntityManager em = emf.createEntityManager();
         BookingInformationDTO bookingInformationDTO;
         try {
             em.getTransaction().begin();
             Car car = em.find(Car.class, regNo);
+            if (car == null) {
+                throw new BookingException("There is no car with the regNo: " + regNo);
+            }
             Date s = StringToDate(start);
             Date e = StringToDate(end);
-            long days = getDays(s, e);
-            BookingInformation bi = new BookingInformation(s.toString(), e.toString(), new Date(), (car.getPrice() * days));
+            BookingInformation bi = new BookingInformation(s.toString(), e.toString(), new Date(), (car.getPrice() * getDays(s, e)));
             bi.setCar(car);
             em.persist(bi);
             bookingInformationDTO = new BookingInformationDTO(bi);

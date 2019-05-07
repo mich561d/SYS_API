@@ -52,51 +52,34 @@ class Error {
 @Provider
 public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
 
-    static private final Gson gson = new Gson();
+    static private final Gson GSON = new Gson();
 
     @Override
     public Response toResponse(Throwable ex) {
-
         Response.StatusType type = getStatusType(ex);
         Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
-
-        Error error = new Error(
-                type.getStatusCode(),
-                type.getReasonPhrase(),
-                ex.getLocalizedMessage());
-
-        String errJson = gson.toJson(error);
-        return Response.status(error.getStatusCode())
-                .entity(errJson)
-                .type(MediaType.APPLICATION_JSON)
-                .build();
+        Error error = new Error(type.getStatusCode(), type.getReasonPhrase(), ex.getLocalizedMessage());
+        String errJson = GSON.toJson(error);
+        return Response.status(error.getStatusCode()).entity(errJson).type(MediaType.APPLICATION_JSON).build();
     }
 
     private Response.StatusType getStatusType(Throwable ex) {
-        if (ex instanceof WebApplicationException) {
-            return ((WebApplicationException) ex).getResponse().getStatusInfo();
-        }
         if (ex instanceof CarException) {
             return Response.Status.BAD_REQUEST;
         }
         if (ex instanceof BookingException) {
             return Response.Status.BAD_REQUEST;
-        } else {
-            return Response.Status.INTERNAL_SERVER_ERROR;
         }
+        if (ex instanceof WebApplicationException) {
+            return ((WebApplicationException) ex).getResponse().getStatusInfo();
+        }
+        return Response.Status.INTERNAL_SERVER_ERROR;
     }
 
     //Small hack, to provide json-error response in the filter
     public static Response makeErrRes(String msg, int status) {
-        Error error = new Error(
-                status,
-                msg,
-                msg);
-
-        String errJson = gson.toJson(error);
-        return Response.status(error.getStatusCode())
-                .entity(errJson)
-                .type(MediaType.APPLICATION_JSON)
-                .build();
+        Error error = new Error(status, msg, msg);
+        String errJson = GSON.toJson(error);
+        return Response.status(error.getStatusCode()).entity(errJson).type(MediaType.APPLICATION_JSON).build();
     }
 }

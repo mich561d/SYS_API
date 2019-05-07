@@ -7,9 +7,6 @@ import exceptions.CarException;
 import exceptions.GenericExceptionMapper;
 import facade.CarFacade;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -32,22 +29,22 @@ public class CarResource {
     @Context
     SecurityContext securityContext;
 
-    private CarFacade f = CarFacade.getInstance(PuSelector.getEntityManagerFactory("pu"));
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private GenericExceptionMapper m = new GenericExceptionMapper();
+    private final CarFacade F = CarFacade.getInstance(PuSelector.getEntityManagerFactory("pu"));
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private final GenericExceptionMapper GEM = new GenericExceptionMapper();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("test")
     public Response test() {
-        return Response.ok().entity(gson.toJson("You passed the test!")).build();
+        return Response.ok().entity(GSON.toJson("You passed the test!")).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all")
     public Response allCars() {
-        return Response.ok().entity(gson.toJson(f.getAllCars())).build();
+        return Response.ok().entity(GSON.toJson(F.getAllCars())).build();
     }
 
     @GET
@@ -55,9 +52,9 @@ public class CarResource {
     @Path("available/{start}/{end}")
     public Response allCarsByPeriod(@PathParam("start") String start, @PathParam("end") String end) {
         try {
-            return Response.ok().entity(gson.toJson(f.getAllCarsByPeriod(start, end))).build();
-        } catch (ParseException ex) {
-            return m.toResponse(ex);
+            return Response.ok().entity(GSON.toJson(F.getAllCarsByPeriod(start, end))).build();
+        } catch (CarException ex) {
+            return GEM.toResponse(ex);
         }
     }
 
@@ -66,9 +63,9 @@ public class CarResource {
     @Path("{regNo}")
     public Response getFromUser(@PathParam("regNo") String regNo) {
         try {
-            return Response.ok().entity(gson.toJson(f.getCarByRegNo(regNo))).build();
+            return Response.ok().entity(GSON.toJson(F.getCarByRegNo(regNo))).build();
         } catch (CarException ex) {
-            return m.toResponse(ex);
+            return GEM.toResponse(ex);
         }
     }
 
@@ -78,10 +75,9 @@ public class CarResource {
     @Path("rent/{regNo}/{start}/{end}")
     public Response rentCar(@PathParam("regNo") String regNo, @PathParam("start") String start, @PathParam("end") String end) {
         try {
-            return Response.ok().entity(gson.toJson(f.rentCar(regNo, start, end))).build();
-        } catch (BookingException | ParseException ex) {
-            return m.toResponse(ex);
+            return Response.ok().entity(GSON.toJson(F.rentCar(regNo, start, end))).build();
+        } catch (BookingException ex) {
+            return GEM.toResponse(ex);
         }
-
     }
 }

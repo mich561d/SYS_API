@@ -27,7 +27,7 @@ public class IntegrationTest {
     @BeforeClass
     public static void setUpBeforeAll() throws ServletException, MalformedURLException, LifecycleException {
         System.out.println("INTEGRATION TEST");
-        TestUtils.setupTestUsers(PuSelector.getEntityManagerFactory("pu_integration_test"));
+        TestUtils.setupTestData(PuSelector.getEntityManagerFactory("pu_integration_test"));
         SERVER_PORT = 7777;
         APP_CONTEXT = "/jwtbackend";
         SERVER_URL = "http://localhost";
@@ -68,7 +68,33 @@ public class IntegrationTest {
     }
 
     @Test
+    public void restAvailableEndPointFail() {
+        given().contentType("application/json").when().get("/api/car/available/04052019/13-05-2019").then().statusCode(400);
+    }
+
+    @Test
     public void restCarEndPoint() {
         given().contentType("application/json").when().get("/api/car/AA12345").then().statusCode(200);
     }
+
+    @Test
+    public void restCarEndPointFail() {
+        given().contentType("application/json").when().get("/api/car/XXXXXXX").then().statusCode(400);
+    }
+
+    @Test
+    public void restRentEndPoint() {
+        given().contentType("application/json").when().post("/api/car/rent/AA12345/13-05-2019/14-05-2019").then().statusCode(200);
+    }
+
+    @Test
+    public void restRentEndPointFail1() {
+        given().contentType("application/json").when().post("/api/car/rent/XXXXXXX/13-05-2019/14-05-2019").then().statusCode(400);
+    }
+
+    @Test
+    public void restRentEndPointFail2() {
+        given().contentType("application/json").when().post("/api/car/rent/AA12345/13052019/14-05-2019").then().statusCode(400);
+    }
+
 }

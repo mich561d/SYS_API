@@ -7,6 +7,6 @@ public class BookingException extends Exception {
     }
 
     public BookingException() {
-        super("The Booking didn't go throught");
+        super("The Booking didn't go through");
     }
 }

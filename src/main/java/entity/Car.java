@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -251,6 +252,9 @@ public class Car implements Serializable {
     }
 
     public Collection<BookingInformation> getBookingInformationCollection() {
+        if (bookingInformationCollection == null) {
+            bookingInformationCollection = new ArrayList();
+        }
         return bookingInformationCollection;
     }
 
