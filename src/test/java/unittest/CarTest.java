@@ -69,4 +69,10 @@ public class CarTest {
         facade.rentCar("XXXXXXX", "13-05-2019", "14-05-2019");
     }
 
+    @Test(expected = BookingException.class)
+    public void rentCarFail3() throws BookingException {
+        facade.rentCar("CC12345", "13-05-2019", "14-05-2019");
+        facade.rentCar("CC12345", "13-05-2019", "14-05-2019");
+    }
+
 }

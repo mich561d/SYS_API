@@ -28,7 +28,7 @@ public class CarFacade {
         return instance;
     }
 
-    public List<CarDTO> getAllCars() {
+    public List<CarDTO> getAllCars() throws CarException {
         EntityManager em = emf.createEntityManager();
         List<CarDTO> carsDTO = new ArrayList();
         try {
@@ -36,6 +36,9 @@ public class CarFacade {
             if (cars.isEmpty()) {
                 SetupTestData.createData();
                 cars = em.createNamedQuery("Car.findAll", Car.class).getResultList();
+            }
+            if (cars.isEmpty()) {
+                throw new CarException("A problem occurred while trying to get all cars! Please contact IT Support!");
             }
             for (Car car : cars) {
                 CarDTO dto = new CarDTO(car);
@@ -107,6 +110,19 @@ public class CarFacade {
             }
             Date s = StringToDate(start);
             Date e = StringToDate(end);
+            // Re check availability
+            List<BookingInformation> bookings = em.createNamedQuery("BookingInformation.findAll", BookingInformation.class).getResultList();
+            for (BookingInformation booking : bookings) {
+                Date bookingStartDate = booking.getStartPeriod();
+                Date bookingEndDate = booking.getEndPeriod();
+                boolean inside = s.after(bookingStartDate) && e.before(bookingEndDate);
+                boolean through = s.before(bookingStartDate) && e.after(bookingEndDate);
+                boolean atStart = s.before(bookingStartDate) && e.after(bookingStartDate);
+                boolean atEnd = s.before(bookingEndDate) && e.after(bookingEndDate);
+                if (inside || through || atStart || atEnd) {
+                    throw new BookingException("This car (" + car.getRegno() + ") and these two dates (" + s + " to " + e + ") is already booked!");
+                }
+            }
             double price = car.getPrice() * getDays(s, e);
             s.setHours(10);
             e.setHours(8);

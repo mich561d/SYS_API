@@ -6,8 +6,6 @@ import exceptions.BookingException;
 import exceptions.CarException;
 import exceptions.GenericExceptionMapper;
 import facade.CarFacade;
-import java.text.ParseException;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;

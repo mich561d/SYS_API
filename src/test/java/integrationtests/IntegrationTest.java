@@ -64,12 +64,12 @@ public class IntegrationTest {
 
     @Test
     public void restAvailableEndPoint() {
-        given().contentType("application/json").when().get("/api/car/available/04-05-2019/13-05-2019").then().statusCode(200);
+        given().contentType("application/json").when().get("/api/car/available/2019-05-03/2019-05-20").then().statusCode(200);
     }
 
     @Test
     public void restAvailableEndPointFail() {
-        given().contentType("application/json").when().get("/api/car/available/04052019/13-05-2019").then().statusCode(400);
+        given().contentType("application/json").when().get("/api/car/available/20190503/2019-05-13").then().statusCode(400);
     }
 
     @Test
@@ -84,17 +84,17 @@ public class IntegrationTest {
 
     @Test
     public void restRentEndPoint() {
-        given().contentType("application/json").when().post("/api/car/rent/AA12345/13-05-2019/14-05-2019").then().statusCode(200);
+        given().contentType("application/json").when().post("/api/car/rent/AA12345/2019-05-13/2019-05-14").then().statusCode(200);
     }
 
     @Test
     public void restRentEndPointFail1() {
-        given().contentType("application/json").when().post("/api/car/rent/XXXXXXX/13-05-2019/14-05-2019").then().statusCode(400);
+        given().contentType("application/json").when().post("/api/car/rent/XXXXXXX/2019-05-13/2019-05-14").then().statusCode(400);
     }
 
     @Test
     public void restRentEndPointFail2() {
-        given().contentType("application/json").when().post("/api/car/rent/AA12345/13052019/14-05-2019").then().statusCode(400);
+        given().contentType("application/json").when().post("/api/car/rent/AA12345/20190513/2019-05-14").then().statusCode(400);
     }
 
 }
