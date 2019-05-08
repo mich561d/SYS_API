@@ -13,8 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.SetupTestData;
 
 public class CarFacade {
@@ -40,7 +38,7 @@ public class CarFacade {
                 cars = em.createNamedQuery("Car.findAll", Car.class).getResultList();
             }
             for (Car car : cars) {
-                CarDTO dto = new CarDTO(car.getRegno(), car.getPrice(), car.getManufactor(), car.getModel(), car.getType(), car.getReleaseYear(), car.getDrivingDist(), car.getSeats(), car.getDrive(), car.getFuelType(), car.getLongitude(), car.getLatitude(), car.getAddress(), car.getCountry().getCountry());
+                CarDTO dto = new CarDTO(car);
                 carsDTO.add(dto);
             }
         } finally {
@@ -62,8 +60,8 @@ public class CarFacade {
             Date startDate = StringToDate(start);
             Date endDate = StringToDate(end);
             for (BookingInformation booking : bookings) {
-                Date s = StringToDate(booking.getStartPeriod());
-                Date e = StringToDate(booking.getEndPeriod());
+                Date s = booking.getStartPeriod();
+                Date e = booking.getEndPeriod();
                 boolean inside = startDate.after(s) && endDate.before(e);
                 boolean through = startDate.before(s) && endDate.after(e);
                 boolean atStart = startDate.before(s) && endDate.after(s);
@@ -73,7 +71,7 @@ public class CarFacade {
                 }
             }
             for (Car car : cars) {
-                CarDTO dto = new CarDTO(car.getRegno(), car.getPrice(), car.getManufactor(), car.getModel(), car.getType(), car.getReleaseYear(), car.getDrivingDist(), car.getSeats(), car.getDrive(), car.getFuelType(), car.getLongitude(), car.getLatitude(), car.getAddress(), car.getCountry().getCountry());
+                CarDTO dto = new CarDTO(car);
                 carsDTO.add(dto);
             }
         } catch (ParseException ex) {
@@ -109,7 +107,10 @@ public class CarFacade {
             }
             Date s = StringToDate(start);
             Date e = StringToDate(end);
-            BookingInformation bi = new BookingInformation(s.toString(), e.toString(), new Date(), (car.getPrice() * getDays(s, e)));
+            double price = car.getPrice() * getDays(s, e);
+            s.setHours(10);
+            e.setHours(8);
+            BookingInformation bi = new BookingInformation(s, e, new Date(), price);
             bi.setCar(car);
             em.persist(bi);
             bookingInformationDTO = new BookingInformationDTO(bi);
@@ -124,15 +125,18 @@ public class CarFacade {
 
     private Date StringToDate(String date) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateObj;
-        dateObj = sdf.parse(date);
+        Date dateObj = sdf.parse(date);
         return dateObj;
     }
 
     private long getDays(Date s, Date e) {
         Date d1 = new Date(s.getYear(), s.getMonth(), s.getDay());
         Date d2 = new Date(e.getYear(), e.getMonth(), e.getDay());
-        return (d2.getTime() - d1.getTime()) / 1000 / 60 / 60 / 24;
+        long price = (d2.getTime() - d1.getTime()) / 1000 / 60 / 60 / 24;
+        if (price == 0) {
+            return 1;
+        }
+        return price;
     }
 
 }

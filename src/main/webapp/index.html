@@ -8,7 +8,7 @@
         <title>Car API</title>
     </head>
     <body>
-        <header id="section-6">
+        <header id="section-7">
             <div>
                 <h1>Car API - The Turtle Troopers</h1>
             </div>
@@ -20,8 +20,9 @@
                 <li><a href="#section-2">API Key</a></li>
                 <li><a href="#section-3">GET</a></li>
                 <li><a href="#section-4">POST</a></li>
-                <li><a href="#section-5">External links</a></li>
-                <li><a href="#section-6">Back to the top &uarr;</a></li>
+                <li><a href="#section-5">DELETE</a></li>
+                <li><a href="#section-6">External links</a></li>
+                <li><a href="#section-7">Back to the top &uarr;</a></li>
             </ul>
         </nav>
 
@@ -110,11 +111,42 @@
                 <div class="container">
                     <div class="control-group">
                         <h2>POST</h2>
-                        <p>Coming soon...</p>
+                        <h3>Rent car by registration number, start date and end date</h3>
+                        <p>Call: https://dueinator.dk/jwtbackend/api/car/rent/{regNo}/{start}/{end}<br>JSON:</p>
+                        <p>{<br>
+                            "startPeriod": "May 8, 2019 10:00:00 AM",<br>
+                            "endPeriod": "May 15, 2019 08:00:00 AM",<br>
+                            "created": "May 8, 2019 9:48:11 AM",<br>
+                            "price": 0,<br>
+                            "car": {<br>
+                            <b>"regno": "AB19406",</b><br>
+                            <b>"price": 247.72,</b><br>
+                            <b>"manufactor": "Toyota",</b><br>
+                            <b>"model": "C-HR",</b><br>
+                            <b>"type": "SUV",</b><br>
+                            <b>"releaseYear": 2011,</b><br>
+                            <b>"drivingDist": 37553,</b><br>
+                            <b>"seats": 5,</b><br>
+                            <b>"drive": "Manual",</b><br>
+                            <b>"fuelType": "Gas",</b><br>
+                            <b>"longitude": "12.6509822",</b><br>
+                            <b>"latitude": "55.6091282",</b><br>
+                            <b>"address": "Copenhagen Airport, Tårnby Kommune, Denmark",</b><br>
+                            <b>"country": "Jordan"</b><br>
+                            <b>}</b><br>
+                            }</p>
                     </div>
                 </div>
             </section>
             <section id="section-5">
+                <div class="container">
+                    <div class="control-group">
+                        <h2>DELETE</h2>
+                        <p>Coming soon...</p>
+                    </div>
+                </div>
+            </section>
+            <section id="section-6">
                 <div class="container">
                     <div class="control-group">
                         <h2>External links</h2>

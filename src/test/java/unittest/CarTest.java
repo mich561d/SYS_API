@@ -32,13 +32,13 @@ public class CarTest {
     }
 
     @Test
-    public void getAllCarsByPeriod() throws ParseException {
+    public void getAllCarsByPeriod() throws CarException {
         List<CarDTO> cars = facade.getAllCarsByPeriod("2019-05-04", "2019-05-13");
         assertEquals(4, cars.size());
     }
 
-    @Test(expected = ParseException.class)
-    public void getAllCarsByPeriodFail() throws CarException, ParseException {
+    @Test(expected = CarException.class)
+    public void getAllCarsByPeriodFail() throws CarException {
         facade.getAllCarsByPeriod("20190504", "2019-05-13");
     }
 

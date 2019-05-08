@@ -3,6 +3,8 @@ package testutils;
 import entity.BookingInformation;
 import entity.Car;
 import entity.Country;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,7 +28,7 @@ public class TestUtils {
             em.createQuery("delete from Car").executeUpdate();
             //Create new cars
             Country country = new Country(1, "Denmark");
-            BookingInformation booking = new BookingInformation("2019-05-03", "2019-05-05", new Date(), 999.09);
+            BookingInformation booking = new BookingInformation(STD("2019-05-03"), STD("2019-05-05"), new Date(), 999.09);
             em.persist(country);
             for (int i = 0; i < 5; i++) {
                 Car car = new Car(R[i], P[i], MA[i], MO[i], "Hatchback", Y[i], D[i], 5, "Manual", "Gas", "12.6509822", "55.6091282", "Copenhagen Airport");
@@ -39,9 +41,21 @@ public class TestUtils {
             }
             System.out.println("Saved test data to database");
             em.getTransaction().commit();
+        } catch (ParseException ex) {
+            System.out.println("------------------------------------------------");
+            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            System.out.println("ERROR-ERROR-ERROR-ERROR--ERROR-ERROR-ERROR-ERROR");
+            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            System.out.println("------------------------------------------------");
         } finally {
             em.close();
         }
+    }
+
+    private static Date STD(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateObj = sdf.parse(date);
+        return dateObj;
     }
 
 }

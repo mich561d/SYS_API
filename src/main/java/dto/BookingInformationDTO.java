@@ -6,12 +6,12 @@ import java.util.Date;
 public class BookingInformationDTO {
 
     private Integer id;
-    private String startPeriod;
-    private String endPeriod;
+    private Date startPeriod;
+    private Date endPeriod;
     private Date created;
     private double price;
     private CarDTO car;
-    
+
     public BookingInformationDTO(BookingInformation bi) {
         this.startPeriod = bi.getStartPeriod();
         this.endPeriod = bi.getEndPeriod();
@@ -20,7 +20,7 @@ public class BookingInformationDTO {
         this.car = new CarDTO(bi.getCar());
     }
 
-    public BookingInformationDTO(String startPeriod, String endPeriod, Date created, double price, CarDTO car) {
+    public BookingInformationDTO(Date startPeriod, Date endPeriod, Date created, double price, CarDTO car) {
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;
         this.created = created;
@@ -36,19 +36,19 @@ public class BookingInformationDTO {
         this.id = id;
     }
 
-    public String getStartPeriod() {
+    public Date getStartPeriod() {
         return startPeriod;
     }
 
-    public void setStartPeriod(String startPeriod) {
+    public void setStartPeriod(Date startPeriod) {
         this.startPeriod = startPeriod;
     }
 
-    public String getEndPeriod() {
+    public Date getEndPeriod() {
         return endPeriod;
     }
 
-    public void setEndPeriod(String endPeriod) {
+    public void setEndPeriod(Date endPeriod) {
         this.endPeriod = endPeriod;
     }
 

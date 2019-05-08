@@ -46,14 +46,14 @@ public class BookingInformation implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "startPeriod", nullable = false, length = 45)
-    private String startPeriod;
+    @Column(name = "startPeriod", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date startPeriod;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "endPeriod", nullable = false, length = 45)
-    private String endPeriod;
+    @Column(name = "endPeriod", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date endPeriod;
     @Basic(optional = false)
     @NotNull
     @Column(name = "created", nullable = false)
@@ -74,7 +74,7 @@ public class BookingInformation implements Serializable {
         this.id = id;
     }
 
-    public BookingInformation(Integer id, String startPeriod, String endPeriod, Date created, double price) {
+    public BookingInformation(Integer id, Date startPeriod, Date endPeriod, Date created, double price) {
         this.id = id;
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;
@@ -82,7 +82,7 @@ public class BookingInformation implements Serializable {
         this.price = price;
     }
 
-    public BookingInformation(String startPeriod, String endPeriod, Date created, double price) {
+    public BookingInformation(Date startPeriod, Date endPeriod, Date created, double price) {
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;
         this.created = created;
@@ -97,19 +97,19 @@ public class BookingInformation implements Serializable {
         this.id = id;
     }
 
-    public String getStartPeriod() {
+    public Date getStartPeriod() {
         return startPeriod;
     }
 
-    public void setStartPeriod(String startPeriod) {
+    public void setStartPeriod(Date startPeriod) {
         this.startPeriod = startPeriod;
     }
 
-    public String getEndPeriod() {
+    public Date getEndPeriod() {
         return endPeriod;
     }
 
-    public void setEndPeriod(String endPeriod) {
+    public void setEndPeriod(Date endPeriod) {
         this.endPeriod = endPeriod;
     }
 
