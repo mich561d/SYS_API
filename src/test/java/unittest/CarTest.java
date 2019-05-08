@@ -26,7 +26,7 @@ public class CarTest {
     }
 
     @Test
-    public void getAllCars() {
+    public void getAllCars() throws CarException {
         List<CarDTO> cars = facade.getAllCars();
         assertEquals(5, cars.size());
     }
