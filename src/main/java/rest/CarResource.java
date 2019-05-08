@@ -42,7 +42,11 @@ public class CarResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all")
     public Response allCars() {
-        return Response.ok().entity(GSON.toJson(F.getAllCars())).build();
+        try {
+            return Response.ok().entity(GSON.toJson(F.getAllCars())).build();
+        } catch (CarException ex) {
+            return GEM.toResponse(ex);
+        }
     }
 
     @GET
