@@ -84,17 +84,17 @@ public class IntegrationTest {
 
     @Test
     public void restRentEndPoint() {
-        given().contentType("application/json").when().post("/api/car/rent/AA12345/2019-05-13/2019-05-14").then().statusCode(200);
+        given().contentType("application/json").when().get("/api/car/rent/AA12345/2019-05-13/2019-05-14").then().statusCode(200);
     }
 
     @Test
     public void restRentEndPointFail1() {
-        given().contentType("application/json").when().post("/api/car/rent/XXXXXXX/2019-05-13/2019-05-14").then().statusCode(400);
+        given().contentType("application/json").when().get("/api/car/rent/XXXXXXX/2019-05-13/2019-05-14").then().statusCode(400);
     }
 
     @Test
     public void restRentEndPointFail2() {
-        given().contentType("application/json").when().post("/api/car/rent/AA12345/20190513/2019-05-14").then().statusCode(400);
+        given().contentType("application/json").when().get("/api/car/rent/AA12345/20190513/2019-05-14").then().statusCode(400);
     }
 
 }
