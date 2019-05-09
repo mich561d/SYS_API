@@ -71,7 +71,7 @@ public class CarResource {
         }
     }
 
-    @POST
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("rent/{regNo}/{start}/{end}")
     public Response rentCar(@PathParam("regNo") String regNo, @PathParam("start") String start, @PathParam("end") String end) {
