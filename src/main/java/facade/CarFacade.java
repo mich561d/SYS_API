@@ -11,8 +11,10 @@ import exceptions.CarException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import utils.SetupTestData;
 
 public class CarFacade {
@@ -113,26 +115,30 @@ public class CarFacade {
             // Re check availability
             List<BookingInformation> bookings = em.createNamedQuery("BookingInformation.findAll", BookingInformation.class).getResultList();
             for (BookingInformation booking : bookings) {
-                Date bookingStartDate = booking.getStartPeriod();
-                Date bookingEndDate = booking.getEndPeriod();
-                boolean inside = s.after(bookingStartDate) && e.before(bookingEndDate);
-                boolean through = s.before(bookingStartDate) && e.after(bookingEndDate);
-                boolean atStart = s.before(bookingStartDate) && e.after(bookingStartDate);
-                boolean atEnd = s.before(bookingEndDate) && e.after(bookingEndDate);
-                if (inside || through || atStart || atEnd) {
-                    throw new BookingException("This car (" + car.getRegno() + ") and these two dates (" + s + " to " + e + ") is already booked!");
+                if (booking.getCar().getRegno().equals(regNo)) {
+                    Date bookingStartDate = booking.getStartPeriod();
+                    Date bookingEndDate = booking.getEndPeriod();
+                    boolean inside = s.after(bookingStartDate) && e.before(bookingEndDate);
+                    boolean through = s.before(bookingStartDate) && e.after(bookingEndDate);
+                    boolean atStart = s.before(bookingStartDate) && e.after(bookingStartDate);
+                    boolean atEnd = s.before(bookingEndDate) && e.after(bookingEndDate);
+                    if (inside || through || atStart || atEnd) {
+                        throw new BookingException("This car (" + car.getRegno() + ") and these two dates (" + s + " to " + e + ") is already booked!");
+                    }
                 }
             }
             double price = car.getPrice() * getDays(s, e);
             s.setHours(10);
             e.setHours(8);
-            BookingInformation bi = new BookingInformation(s, e, new Date(), price);
+            BookingInformation bi = new BookingInformation(s, e, Calendar.getInstance(TimeZone.getTimeZone("da_DK")).getTime(), price);
             bi.setCar(car);
             em.persist(bi);
             bookingInformationDTO = new BookingInformationDTO(bi);
             em.getTransaction().commit();
         } catch (ParseException e) {
             throw new BookingException("One or Both of the dates are invalid!");
+        } catch (BookingException e) {
+            throw new BookingException(e.getMessage());
         } finally {
             em.close();
         }
@@ -145,14 +151,32 @@ public class CarFacade {
         return dateObj;
     }
 
-    private long getDays(Date s, Date e) {
-        Date d1 = new Date(s.getYear(), s.getMonth(), s.getDay());
-        Date d2 = new Date(e.getYear(), e.getMonth(), e.getDay());
-        long price = (d2.getTime() - d1.getTime()) / 1000 / 60 / 60 / 24;
-        if (price == 0) {
-            return 1;
+    private long getDays(Date s, Date e) throws BookingException {
+        if (e.before(s)) {
+            throw new BookingException("Start date:" + s + " and end date: " + e + " is not a valid period");
         }
-        return price;
+        Date d1 = new Date(s.getYear(), s.getMonth(), s.getDay(), 0, 0, 0);
+        Date d2 = new Date(e.getYear(), e.getMonth(), e.getDay(), 0, 0, 0);
+        long t1 = d1.getTime();
+        long t2 = d2.getTime();
+        if (t2 < t1) {
+            throw new BookingException("While calculating days between dates an error occurred! t2:" + t2 + " - t1:" + t1 + " = " + (t2 - t1));
+        }
+        System.out.println("t2:" + t2);
+        System.out.println("t1:" + t1);
+        System.out.println("t2-t1:" + (t2 - t1));
+        long seconds = (t2 - t1) / 1000;
+        System.out.println("seconds:" + seconds);
+        long minutes = seconds / 60;
+        System.out.println("minutes:" + minutes);
+        long hours = minutes / 60;
+        System.out.println("hours:" + hours);
+        long days = hours / 24;
+        System.out.println("days:" + days);
+        if (days < 0) {
+            throw new BookingException("While calculating days between dates an error occurred! Days is lower than 0 (days: " + days + ")");
+        }
+        return days;
     }
 
 }
