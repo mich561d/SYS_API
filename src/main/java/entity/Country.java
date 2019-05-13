@@ -42,7 +42,7 @@ public class Country implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "country", nullable = false, length = 45)
+    @Column(name = "country", nullable = false, length = 45, unique = true)
     private String country;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "country")
     private Collection<Car> carCollection;
