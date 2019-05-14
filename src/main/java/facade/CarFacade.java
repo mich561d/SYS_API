@@ -179,4 +179,26 @@ public class CarFacade {
         return days;
     }
 
+    public boolean cancelBooking(int bookingId) throws BookingException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            BookingInformation booking = em.find(BookingInformation.class, bookingId);
+            if (booking == null) {
+                throw new BookingException("There is no booking with the id: " + bookingId);
+            }
+            boolean hasStarted = booking.getStartPeriod().after(Calendar.getInstance(TimeZone.getTimeZone("da_DK")).getTime());
+            if (hasStarted) {
+                throw new BookingException("This booking has already started therefore it cannot be cancelled!");
+            }
+            em.remove(booking);
+            em.getTransaction().commit();
+        } catch (BookingException e) {
+            throw new BookingException(e.getMessage());
+        } finally {
+            em.close();
+        }
+        return true;
+    }
+
 }

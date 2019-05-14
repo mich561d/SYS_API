@@ -80,4 +80,16 @@ public class CarResource {
             return GEM.toResponse(ex);
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cancel/{bookingId}")
+    public Response cancelBooking(@PathParam("bookingId") String bookingId) {
+        try {
+            return Response.ok().entity(GSON.toJson(F.cancelBooking(Integer.parseInt(bookingId)))).build();
+        } catch (BookingException ex) {
+            return GEM.toResponse(ex);
+        }
+    }
+
 }

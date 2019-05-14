@@ -54,7 +54,7 @@ public class CarTest {
 
     @Test
     public void rentCar() throws BookingException {
-        BookingInformationDTO booking = facade.rentCar("AA12345", "13-05-2019", "14-05-2019");
+        BookingInformationDTO booking = facade.rentCar("AA12345", "20-05-2019", "27-05-2019");
         assertEquals("AA12345", booking.getCar().getRegno());
     }
 
@@ -72,6 +72,23 @@ public class CarTest {
     public void rentCarFail3() throws BookingException {
         facade.rentCar("CC12345", "13-05-2019", "14-05-2019");
         facade.rentCar("CC12345", "13-05-2019", "14-05-2019");
+    }
+
+    @Test
+    public void cancelBooking() throws BookingException {
+        facade.rentCar("EE12345", "20-05-2019", "27-05-2019");
+        boolean cancelledBooking = facade.cancelBooking(2);
+        assertTrue(cancelledBooking);
+    }
+
+    @Test(expected = BookingException.class)
+    public void cancelBookingFail1() throws BookingException {
+        facade.cancelBooking(360360360);
+    }
+
+    @Test(expected = BookingException.class)
+    public void cancelBookingFail2() throws BookingException {
+        facade.cancelBooking(1);
     }
 
 }
