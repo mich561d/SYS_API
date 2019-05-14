@@ -5,7 +5,6 @@ import dto.CarDTO;
 import exceptions.BookingException;
 import facade.CarFacade;
 import exceptions.CarException;
-import java.text.ParseException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import org.junit.BeforeClass;
