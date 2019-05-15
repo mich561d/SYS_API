@@ -133,8 +133,8 @@ public class CarFacade {
             BookingInformation bi = new BookingInformation(s, e, Calendar.getInstance(TimeZone.getTimeZone("da_DK")).getTime(), price);
             bi.setCar(car);
             em.persist(bi);
-            bookingInformationDTO = new BookingInformationDTO(bi);
             em.getTransaction().commit();
+            bookingInformationDTO = new BookingInformationDTO(bi);
         } catch (ParseException e) {
             throw new BookingException("One or Both of the dates are invalid!");
         } catch (BookingException e) {
@@ -187,7 +187,7 @@ public class CarFacade {
             if (booking == null) {
                 throw new BookingException("There is no booking with the id: " + bookingId);
             }
-            boolean hasStarted = booking.getStartPeriod().after(Calendar.getInstance(TimeZone.getTimeZone("da_DK")).getTime());
+            boolean hasStarted = Calendar.getInstance(TimeZone.getTimeZone("da_DK")).getTime().after(booking.getStartPeriod());
             if (hasStarted) {
                 throw new BookingException("This booking has already started therefore it cannot be cancelled!");
             }

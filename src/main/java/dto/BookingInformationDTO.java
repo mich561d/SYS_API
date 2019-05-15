@@ -13,6 +13,7 @@ public class BookingInformationDTO {
     private CarDTO car;
 
     public BookingInformationDTO(BookingInformation bi) {
+        this.id = bi.getId();
         this.startPeriod = bi.getStartPeriod();
         this.endPeriod = bi.getEndPeriod();
         this.created = bi.getCreated();

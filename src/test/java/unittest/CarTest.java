@@ -54,30 +54,35 @@ public class CarTest {
 
     @Test
     public void rentCar() throws BookingException {
-        BookingInformationDTO booking = facade.rentCar("AA12345", "20-05-2019", "27-05-2019");
+        BookingInformationDTO booking = facade.rentCar("AA12345", "2019-05-20", "2019-05-27");
         assertEquals("AA12345", booking.getCar().getRegno());
     }
 
     @Test(expected = BookingException.class)
     public void rentCarFail1() throws BookingException {
-        facade.rentCar("AA12345", "13052019", "14-05-2019");
+        facade.rentCar("AA12345", "20190520", "2019-05-27");
     }
 
     @Test(expected = BookingException.class)
     public void rentCarFail2() throws BookingException {
-        facade.rentCar("XXXXXXX", "13-05-2019", "14-05-2019");
+        facade.rentCar("XXXXXXX", "2019-05-20", "2019-05-27");
     }
 
     @Test(expected = BookingException.class)
     public void rentCarFail3() throws BookingException {
-        facade.rentCar("CC12345", "13-05-2019", "14-05-2019");
-        facade.rentCar("CC12345", "13-05-2019", "14-05-2019");
+        facade.rentCar("CC12345", "2019-05-20", "2019-05-27");
+        facade.rentCar("CC12345", "2019-05-20", "2019-05-27");
+    }
+
+    @Test(expected = BookingException.class)
+    public void rentCarFail4() throws BookingException {
+        facade.rentCar("CC12345", "2019-05-27", "2019-05-20");
     }
 
     @Test
     public void cancelBooking() throws BookingException {
-        facade.rentCar("EE12345", "20-05-2019", "27-05-2019");
-        boolean cancelledBooking = facade.cancelBooking(2);
+        int id = facade.rentCar("EE12345", "2019-05-20", "2019-05-27").getId();
+        boolean cancelledBooking = facade.cancelBooking(id);
         assertTrue(cancelledBooking);
     }
 
@@ -88,7 +93,8 @@ public class CarTest {
 
     @Test(expected = BookingException.class)
     public void cancelBookingFail2() throws BookingException {
-        facade.cancelBooking(1);
+        int id = facade.rentCar("EE12345", "2019-05-14", "2019-05-27").getId();
+        facade.cancelBooking(id);
     }
 
 }
